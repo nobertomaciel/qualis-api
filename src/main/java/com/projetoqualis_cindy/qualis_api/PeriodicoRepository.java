@@ -23,4 +23,7 @@ public interface PeriodicoRepository extends JpaRepository<Periodico, Long> {
     GROUP BY p.estrato
     """)
     List<Object[]> contarPorEstratoDaArea(@Param("area") String area);
+
+    @Query("SELECT DISTINCT p.areaAvaliacao FROM Periodico p ORDER BY p.areaAvaliacao")
+    List<String> findDistinctAreas();
 }
