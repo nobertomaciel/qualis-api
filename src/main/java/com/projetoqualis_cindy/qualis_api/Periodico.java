@@ -19,7 +19,7 @@ public class Periodico {
     private String issn;
     @JsonProperty("Título")
     private String titulo;
-    @JsonProperty("Area de Avaliação")
+    @JsonProperty("Área de Avaliação")
     private String areaAvaliacao;
     @JsonProperty("Estrato")
     private String estrato;
