@@ -22,5 +22,22 @@ public class QualisController {
     public List<Periodico> buscarTitulo(@RequestParam String titulo) {
         return service.buscarPorTitulo(titulo);
     }
-    
+
+    @GetMapping("/area")
+    public List<Periodico> buscarArea(@RequestParam String area) {
+        return service.buscarPorArea(area);
+    }
+
+    @GetMapping("/estrato")
+    public List<Periodico> buscarEstrato(@RequestParam String estrato) {
+        return service.buscarPorEstrato(estrato);
+    }
+
+    @GetMapping("/filtro")
+    public List<Periodico> buscarAreaEstrato(
+            @RequestParam String area,
+            @RequestParam String estrato) {
+        return service.buscarPorAreaEstrato(area, estrato);
+
+    }
 }
