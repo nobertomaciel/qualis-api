@@ -7,17 +7,20 @@ import java.util.List;
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class QualisController {
+    private final PeriodicoService service;
 
-    @Autowired
-    private PeriodicoRepository repository;
-
-    @GetMapping("/areas")
-    public List<String> listarAreas() {
-        return repository.findDistinctAreas();
+    public QualisController(PeriodicoService service) {
+        this.service = service;
     }
 
-    @GetMapping("/periodicos")
-    public List<Periodico> listarPorAreas(@RequestParam String area) {
-        return repository.findByAreaAvaliacao(area);
+    @GetMapping("/issn/{issn}")
+    public Periodico buscarIssn(@PathVariable String issn) {
+        return service.buscarPorIssn(issn);
     }
+
+    @GetMapping("/titulo")
+    public List<Periodico> buscarTitulo(@RequestParam String titulo) {
+        return service.buscarPorTitulo(titulo);
+    }
+    
 }
