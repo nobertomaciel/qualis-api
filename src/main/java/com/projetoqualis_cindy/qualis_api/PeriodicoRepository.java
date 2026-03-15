@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.repository.query.Param;
 
 public interface PeriodicoRepository extends JpaRepository<Periodico, Long> {
 
@@ -15,4 +16,6 @@ public interface PeriodicoRepository extends JpaRepository<Periodico, Long> {
     List<Periodico> findByEstrato(String estrato);
     List<Periodico> findByAreaAvaliacaoAndEstrato(String area, String estrato);
 
+    @Query("SELECT p.estrato, COUNT(p) FROM Periodico p WHERE p.areaAvaliacao = :area GROUP BY p.estrato")
+    List<Object[]> contarPorEstratoDaArea(@Param("area") String area);
 }
