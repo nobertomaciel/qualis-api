@@ -2,6 +2,7 @@ package com.projetoqualis_cindy.qualis_api;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,20 +28,26 @@ public class PeriodicoService {
     public List<Periodico> buscarPorAreaEstrato(String area, String estrato) {
         return repository.findByAreaAvaliacaoAndEstrato(area, estrato);
     }
-    public Map<String, Long> distribuicaoPorEstrato(String area){
+    public List<EstatisticaEstrato> distribuicaoPorEstrato(String area){
 
         List<Object[]> dados = repository.contarPorEstratoDaArea(area);
 
-        Map<String, Long> resultado = new HashMap<>();
+        List<EstatisticaEstrato> resultado = new ArrayList<>();
 
         for(Object[] linha : dados){
 
             String estrato = (String) linha[0];
             Number quantidade = (Number) linha[1];
 
-            resultado.put(estrato, quantidade.longValue());
+            resultado.add(
+                    new EstatisticaEstrato(
+                            estrato,
+                            quantidade.longValue()
+                    )
+            );
         }
 
         return resultado;
     }
+
 }

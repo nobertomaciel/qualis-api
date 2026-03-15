@@ -1,18 +1,15 @@
 package com.projetoqualis_cindy.qualis_api;
 
-import java.util.*;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "*")
 public class QualisController {
+
     private final PeriodicoService service;
 
     @Autowired
@@ -45,13 +42,11 @@ public class QualisController {
             @RequestParam String area,
             @RequestParam String estrato) {
         return service.buscarPorAreaEstrato(area, estrato);
-
     }
 
     @GetMapping("/distribuicao")
-    public Map<String, Long> distribuicao(@RequestParam String area){
+    public List<EstatisticaEstrato> distribuicao(@RequestParam String area) {
         return service.distribuicaoPorEstrato(area);
     }
-
 }
 
