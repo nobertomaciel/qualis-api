@@ -22,6 +22,10 @@ public class DataImportService {
 
     @PostConstruct
     public void importData() {
+        if (repository.count() > 0) {
+            System.out.println(">>>Dados já CARREGADOS importação ignorada");
+            return;
+        }
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream("qualis.csv");
             BOMInputStream bomInputStream = new BOMInputStream(is);
