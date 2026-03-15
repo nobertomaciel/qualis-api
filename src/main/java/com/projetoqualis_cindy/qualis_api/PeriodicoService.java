@@ -15,9 +15,12 @@ public class PeriodicoService {
         this.repository = repository;
     }
     public Periodico buscarPorIssn(String issn) {
-
-        return repository.findByIssn(issn)
-                .orElseThrow(()-> new PeriodicoNotFoundException("ISSN não encontrado"));
+        List<Periodico> resultado = repository.findByIssn(issn);
+        if (resultado.isEmpty()) {
+            throw new PeriodicoNotFoundException(
+                    "Periódico com ISSN '" + issn + "' não encontrado");
+        }
+        return resultado.get(0);
     }
     public List<Periodico> buscarPorTitulo(String titulo) {
         List<Periodico> resultado = repository.findByTituloContainingIgnoreCase(titulo);

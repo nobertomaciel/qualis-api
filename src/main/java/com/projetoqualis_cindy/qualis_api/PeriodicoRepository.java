@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface PeriodicoRepository extends JpaRepository<Periodico, Long> {
 
-    Optional<Periodico> findByIssn(String issn);
+    List<Periodico> findByIssn(String issn);
 
     List<Periodico> findByTituloContainingIgnoreCase(String titulo);
 
