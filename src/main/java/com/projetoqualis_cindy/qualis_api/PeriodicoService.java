@@ -32,7 +32,7 @@ public class PeriodicoService {
         List<Periodico> resultado = repository.findByAreaAvaliacao(area);
         if (resultado.isEmpty()) {
             throw new AreaNotFoundException(
-                    "Área de avaliação '" + area + "não encontrada"
+                    "Área de avaliação '" + area + "' não encontrada"
             );
         }
         return resultado;
@@ -50,6 +50,12 @@ public class PeriodicoService {
         return repository.findByAreaAvaliacaoAndEstrato(area, estrato);
     }
     public List<EstatisticaEstrato> distribuicaoPorEstrato(String area){
+        List<String> areas = repository.findDistinctAreas();
+        if (!areas.contains(area)) {
+            throw new AreaNotFoundException(
+                    "Área de avaliação '" + area + "' não encontrada"
+            );
+        }
 
         List<Object[]> dados = repository.contarPorEstratoDaArea(area);
 
