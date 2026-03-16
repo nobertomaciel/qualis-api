@@ -40,4 +40,31 @@ function renderizarTabela(periodicos){
         return;
 
     }
+    const linhas = periodicos.map(p => {
+        const issn    = p.issn    || p['ISSN']                || '-';
+        const titulo  = p.titulo  || p['Título']               || '-';
+        const area    = p.areaAvaliacao || p['Área de Avaliação'] || '-';
+        const estrato = p.estrato || p['Estrato']              || '-';
+
+        return `<tr>
+            <td>${issn}</td>
+            <td>${titulo}</td>
+            <td>${area}</td>
+            <td><span class="tag ${estrato}">${estrato}</span></td>
+        </tr>`;
+    }).join('');
+
+    corpo.innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>ISSN</th>
+                    <th>Título</th>
+                    <th>Área de Avaliação</th>
+                    <th>Estrato</th>
+                </tr>
+            </thead>
+            <tbody>${linhas}</tbody>
+        </table>`;
+
 }
