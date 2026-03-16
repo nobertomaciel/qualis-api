@@ -68,3 +68,139 @@ function renderizarTabela(periodicos){
         </table>`;
 
 }
+
+// Busca por ISSN
+async function buscarPorIssn() {
+    const issn = document.getElementById('input-issn').value.trim();
+    if (!issn) return;
+
+    mostrarCarregando();
+    try {
+        const resposta = await fetch(`${API}/issn/${encodeURIComponent(issn)}`);
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            mostrarErro(erro.message);
+            return;
+        }
+        const periodico = await resposta.json();
+        renderizarTabela(periodico ? [periodico] : []);
+    } catch (e) {
+        mostrarErro('Erro ao conectar com a API. Verifique se o servidor está rodando.');
+    }
+}
+
+// Busca por título
+async function buscarPorTitulo() {
+    const titulo = document.getElementById('input-titulo').value.trim();
+    if (!titulo) return;
+
+    mostrarCarregando();
+    try {
+        const resposta = await fetch(`${API}/titulo?titulo=${encodeURIComponent(titulo)}`);
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            mostrarErro(erro.message);
+            return;
+        }
+        renderizarTabela(await resposta.json());
+    } catch (e) {
+        mostrarErro('Erro ao conectar com a API. Verifique se o servidor está rodando.');
+    }
+}
+
+// Busca por área
+async function buscarPorArea() {
+    const area = document.getElementById('select-area').value;
+    if (!area) return;
+
+    mostrarCarregando();
+    try {
+        const resposta = await fetch(`${API}/area?area=${encodeURIComponent(area)}`);
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            mostrarErro(erro.message);
+            return;
+        }
+        renderizarTabela(await resposta.json());
+    } catch (e) {
+        mostrarErro('Erro ao conectar com a API. Verifique se o servidor está rodando.');
+    }
+}
+
+// Busca por estrato
+async function buscarPorEstrato() {
+    const estrato = document.getElementById('select-estrato').value;
+    if (!estrato) return;
+
+    mostrarCarregando();
+    try {
+        const resposta = await fetch(`${API}/estrato?estrato=${encodeURIComponent(estrato)}`);
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            mostrarErro(erro.message);
+            return;
+        }
+        renderizarTabela(await resposta.json());
+    } catch (e) {
+        mostrarErro('Erro ao conectar com a API. Verifique se o servidor está rodando.');
+    }
+}
+// Busca distribuição por estrato e monta o gráfico
+async function buscarDistribuicao() {
+    const area = document.getElementById('select-area-grafico').value;
+    if (!area) return;
+
+    document.getElementById('barras-grafico').innerHTML =
+        '<p class="estado-vazio">Carregando...</p>';
+
+    try {
+        const resposta = await fetch(`${API}/distribuicao?area=${encodeURIComponent(area)}`);
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            document.getElementById('barras-grafico').innerHTML =
+                `<p class="estado-vazio" style="color: #c0504a;">${erro.message}</p>`;
+            return;
+        }
+
+        const dados = await resposta.json();
+        const maximo = Math.max(...dados.map(d => d.quantidade));
+
+        const barras = dados.map(d => {
+            const largura = Math.round((d.quantidade / maximo) * 100);
+            return `
+                <div class="linha-barra">
+                    <span class="rotulo-barra">${d.estrato}</span>
+                    <div class="trilho-barra">
+                        <div class="preenchimento-barra tag ${d.estrato}" style="width: ${largura}%">
+                            <span>${d.quantidade}</span>
+                        </div>
+                    </div>
+                </div>`;
+        }).join('');
+
+        document.getElementById('barras-grafico').innerHTML =
+            `<div class="barras">${barras}</div>`;
+
+    } catch (e) {
+        document.getElementById('barras-grafico').innerHTML =
+            '<p class="estado-vazio" style="color: #c0504a;">Erro ao conectar com a API.</p>';
+    }
+}
+
+// Conecta os botões às funções
+document.getElementById('btn-issn').addEventListener('click', buscarPorIssn);
+document.getElementById('btn-titulo').addEventListener('click', buscarPorTitulo);
+document.getElementById('btn-area').addEventListener('click', buscarPorArea);
+document.getElementById('btn-estrato').addEventListener('click', buscarPorEstrato);
+document.getElementById('btn-grafico').addEventListener('click', buscarDistribuicao);
+
+// Permite buscar com Enter nos campos de texto
+document.getElementById('input-issn').addEventListener('keydown', e => {
+    if (e.key === 'Enter') buscarPorIssn();
+});
+document.getElementById('input-titulo').addEventListener('keydown', e => {
+    if (e.key === 'Enter') buscarPorTitulo();
+});
+
+// Inicia carregando as áreas quando a página carregar
+carregarAreas();
