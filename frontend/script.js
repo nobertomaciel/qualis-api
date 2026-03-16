@@ -20,11 +20,16 @@ async function carregarAreas() {
 }
 
 //Mostra mensagem de erro
-function mostraErro(mensagem) {
+function mostrarErro(mensagem) {
     document.getElementById('corpo-resultados').innerHTML =
     `<p class='estado-vazio' style="color: #c0504a;">${mensagem}</p>`;
     document.getElementById('contagem-resultados').textContent = '0 periódicos';
 
+}
+
+function mostrarCarregando() {
+    document.getElementById('corpo-resultados').innerHTML =
+        '<p class="estado-vazio">Buscando...</p>';
 }
 
 //Montar tabela com resultados
@@ -33,8 +38,7 @@ function renderizarTabela(periodicos){
     const contagem = document.getElementById('contagem-resultados');
     const corpo = document.getElementById('corpo-resultados');
 
-    contagem.textContent = `${periodicos.length} periódico${periodicos.length}`;
-
+    contagem.textContent = `${periodicos.length} periódico${periodicos.length !== 1 ? 's' : ''}`;
     if (periodicos.length === 0) {
         corpo.innerHTML = '<p class="estado-vazio">Nenhum periódico encontrado</p>'
         return;
