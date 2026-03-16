@@ -18,3 +18,26 @@ async function carregarAreas() {
         selectAreaGrafico.appendChild(opcao.cloneNode(true));
     });
 }
+
+//Mostra mensagem de erro
+function mostraErro(mensagem) {
+    document.getElementById('corpo-resultados').innerHTML =
+    `<p class='estado-vazio' style="color: #c0504a;">${mensagem}</p>`;
+    document.getElementById('contagem-resultados').textContent = '0 periódicos';
+
+}
+
+//Montar tabela com resultados
+
+function renderizarTabela(periodicos){
+    const contagem = document.getElementById('contagem-resultados');
+    const corpo = document.getElementById('corpo-resultados');
+
+    contagem.textContent = `${periodicos.length} periódico${periodicos.length}`;
+
+    if (periodicos.length === 0) {
+        corpo.innerHTML = '<p class="estado-vazio">Nenhum periódico encontrado</p>'
+        return;
+
+    }
+}
