@@ -182,4 +182,49 @@ tr:hover td {
     flex-shrink: 0;
 }
 
-.
+.cabecalho-grafico select {
+    flex: 1;
+    padding: 7px 10px;
+    border: 1px solid #d0d0c8;
+    border-radius: 8px;
+    background-color: #f7f7f3;
+    color: #1a1a2e;
+    font-size: 13px;
+    outline: none;
+}
+
+.cabecalho-grafico button {
+    padding: 7px 14px;
+    background: linear-gradient(135deg, #1a6bb5, #2e8b57);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: opacity 0.2s;
+}
+
+.cabecalho-grafico button:hover {
+    opacity: 0.85;
+}
+
+.barras {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.linha-barra {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.rotulo-barra {
+    font-size: 12px;
+    font-weight: 600;
+    width: 28px;
+    text-align: right;
+    color: #666;
+}
