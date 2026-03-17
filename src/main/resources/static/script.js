@@ -1,28 +1,5 @@
 // Endereço base da API
 const API = 'http://localhost:8080/api';
-// Filtro para Controle de Limite de Resultados
-const selectLimite = document.getElementById('select-limite');
-const inputLimite = document.getElementById('input-limite');
-
-selectLimite.addEventListener('change', function() {
-    if (this.value === 'personalizado') {
-        inputLimite.style.display = 'inline-block';
-        inputLimite.focus();
-    } else {
-        inputLimite.style.display = 'none';
-        inputLimite.value = '';
-    }
-});
-
-function obterLimite() {
-    const valor = selectLimite.value;
-    if (valor === 'personalizado') {
-        const custom = parseInt(inputLimite.value);
-        return custom > 0 ? custom : 20;
-    }
-    return parseInt(valor);
-}
-
 
 async function carregarAreas() {
     const resposta = await fetch(`${API}/areas`);
@@ -120,6 +97,7 @@ async function buscarPorTitulo() {
     const titulo = document.getElementById('input-titulo').value.trim();
     if (!titulo) return;
 
+
     mostrarCarregando();
     try {
         const resposta = await fetch(`${API}/titulo?titulo=${encodeURIComponent(titulo)}`);
@@ -139,6 +117,7 @@ async function buscarPorArea() {
     const area = document.getElementById('select-area').value;
     if (!area) return;
 
+
     mostrarCarregando();
     try {
         const resposta = await fetch(`${API}/area?area=${encodeURIComponent(area)}`);
@@ -157,6 +136,7 @@ async function buscarPorArea() {
 async function buscarPorEstrato() {
     const estrato = document.getElementById('select-estrato').value;
     if (!estrato) return;
+
 
     mostrarCarregando();
     try {
