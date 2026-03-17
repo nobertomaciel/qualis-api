@@ -11,19 +11,25 @@ body {
 }
 
 header {
-    background-color: #fff;
-    padding: 16px 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
+        background-color: #fff;
+        padding: 16px 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+
 }
 
 header img {
-    height: 100px;
+    height: 80px;
+}
+.divisor {
+    width: 1px;
+    height: 36px;
+    background-color: #e0e0d8;
 }
 header .titulo-card {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 600;
     color: #1a6bb5;
     text-transform: none;
@@ -32,7 +38,8 @@ header .titulo-card {
 }
 header p {
     font-size: 13px;
-    color: #666;
+    color: #1a6bb5;
+    font-weight: 500;
 }
 
 
@@ -118,15 +125,15 @@ main {
     background-color: #fafaf7;
 }
 
-
 .cabecalho-resultados .titulo-card {
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.05em;
     margin-bottom: 0px;
 }
 
 .cabecalho-grafico {
     display: flex;
+    flex-wrap: nowrap;
     align-items: center;
     gap: 12px;
     margin-bottom: 20px;
@@ -199,8 +206,10 @@ tr:hover td {
 }
 
 .cabecalho-grafico .titulo-card {
-    font-size: 14px;
+    font-size: 12px;
     flex-shrink: 0;
+    white-space: nowrap;
+
 }
 
 .cabecalho-grafico select {

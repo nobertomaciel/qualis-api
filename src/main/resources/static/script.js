@@ -1,7 +1,29 @@
 // Endereço base da API
 const API = 'http://localhost:8080/api';
+// Filtro para Controle de Limite de Resultados
+const selectLimite = document.getElementById('select-limite');
+const inputLimite = document.getElementById('input-limite');
 
-// Carrega as áreas da API e popula os dropdowns
+selectLimite.addEventListener('change', function() {
+    if (this.value === 'personalizado') {
+        inputLimite.style.display = 'inline-block';
+        inputLimite.focus();
+    } else {
+        inputLimite.style.display = 'none';
+        inputLimite.value = '';
+    }
+});
+
+function obterLimite() {
+    const valor = selectLimite.value;
+    if (valor === 'personalizado') {
+        const custom = parseInt(inputLimite.value);
+        return custom > 0 ? custom : 20;
+    }
+    return parseInt(valor);
+}
+
+
 async function carregarAreas() {
     const resposta = await fetch(`${API}/areas`);
     const areas = await resposta.json();

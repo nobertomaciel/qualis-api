@@ -12,6 +12,7 @@
 
 <header>
     <img src="qualis-logo.png" alt="QUALIS">
+    <div class="divisor"></div>
     <p class ="titulo-card"> Consulta de Classificações de Periódicos Acadêmicos</p>
 </header>
 <main>
@@ -64,7 +65,16 @@
 
             <span id="contagem-resultados" class="badge">0 periódicos</span>
         </div>
-
+        <div class="limite-resultados">
+            <span class="label-limite">Mostrar:</span>
+            <select id="select-limite">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="30">30</option>
+                <option value="personalizado">Personalizado</option>
+            </select>
+            <input type="number" id="input-limite" min="1" placeholder="Qty" style="display: none;">
+        </div>
         <div id="corpo-resultados">
             <p class="estado-vazio">Use os filtros acima para buscar periódicos</p>
         </div>
