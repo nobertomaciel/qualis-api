@@ -14,14 +14,22 @@ header {
     background-color: #fff;
     padding: 16px 40px;
     display: flex;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
 }
 
 header img {
     height: 100px;
 }
-
+header .titulo-card {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a6bb5;
+    text-transform: none;
+    letter-spacing: 0.02em;
+    margin-bottom: 0;
+}
 header p {
     font-size: 13px;
     color: #666;
@@ -264,3 +272,79 @@ tr:hover td {
     font-weight: 500;
 }
 
+@media (max-width: 768px) {
+    header {
+        padding: 12px 16px;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    header img {
+        height: 80px;
+    }
+
+    header .titulo-card {
+        font-size: 18px;
+    }
+
+    main {
+        padding: 16px;
+    }
+
+    .grade-busca {
+        grid-template-columns: 1fr;
+    }
+
+    .linha-input {
+        flex-wrap: wrap;
+    }
+
+    .linha-input input,
+    .linha-input select {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .linha-input button {
+        width: 100%;
+    }
+
+    .cabecalho-resultados {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+
+    .cabecalho-grafico {
+        flex-wrap: wrap;
+    }
+
+    .cabecalho-grafico select,
+    .cabecalho-grafico button {
+        width: 100%;
+    }
+
+    .cabecalho-grafico .titulo-card {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .secao-resultados {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    th, td {
+        padding: 8px 12px;
+    }
+
+    .rotulo-barra {
+        width: 32px;
+        font-size: 11px;
+    }
+}
