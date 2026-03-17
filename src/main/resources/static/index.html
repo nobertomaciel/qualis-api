@@ -60,10 +60,22 @@
         </div>
     </section>
     <section class="secao-resultados">
-        <div class="cabecalho-resultados">
-        <span class="titulo-card">Resultados</span>
 
-            <span id="contagem-resultados" class="badge">0 periódicos</span>
+        <div class="cabecalho-resultados">
+            <span class="titulo-card">Resultados</span>
+            <div style="display:flex; align-items:center; gap:8px;">
+                <span id="contagem-resultados" class="badge">0 periódicos</span>
+                <select id="select-limite" style="display:none; padding:4px 8px; border:1px solid #d0d0c8; border-radius:8px; background:#f7f7f3; color:#1a1a2e; font-size:12px;">
+                    <option value="5">5 por página</option>
+                    <option value="10">10 por página</option>
+                    <option value="30" selected>30 por página</option>
+                    <option value="todos">Todos</option>
+                    <option value="personalizado">Personalizado</option>
+                </select>
+                <input type="text" id="input-limite" placeholder="Ex: 50" maxlength="5"
+                       style="display:none; width:70px; padding:4px 8px; border:1px solid #d0d0c8; border-radius:8px; background:#f7f7f3; color:#1a1a2e; font-size:12px;">
+                <button id="btn-aplicar-limite" style="display:none; padding:4px 10px; background:linear-gradient(135deg,#1a6bb5,#2e8b57); color:#fff; border:none; border-radius:8px; font-size:12px; cursor:pointer;">OK</button>
+            </div>
         </div>
         <div id="corpo-resultados">
             <p class="estado-vazio">Use os filtros acima para buscar periódicos</p>

@@ -1,6 +1,49 @@
 // Endereço base da API
 const API = 'http://localhost:8080/api';
 
+// Variáveis de paginação
+let todosResultados = [];
+let paginaAtual = 1;
+let limitePorPagina = 30;
+
+// Controle do select de limite
+document.getElementById('select-limite').addEventListener('change', function() {
+    if (this.value === 'personalizado') {
+        document.getElementById('input-limite').style.display = 'inline-block';
+        document.getElementById('btn-aplicar-limite').style.display = 'inline-block';
+        document.getElementById('input-limite').focus();
+    } else {
+        document.getElementById('input-limite').style.display = 'none';
+        document.getElementById('btn-aplicar-limite').style.display = 'none';
+        limitePorPagina = this.value === 'todos' ? Infinity : parseInt(this.value);
+        paginaAtual = 1;
+        renderizarPagina();
+    }
+});
+
+// Validação do campo personalizado — só aceita números
+document.getElementById('input-limite').addEventListener('keydown', function(e) {
+    const permitidos = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+    if (permitidos.includes(e.key)) return;
+    if (!/^[0-9]$/.test(e.key)) e.preventDefault();
+});
+
+document.getElementById('input-limite').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+document.getElementById('btn-aplicar-limite').addEventListener('click', function() {
+    const val = parseInt(document.getElementById('input-limite').value);
+    if (!val || val < 1) {
+        document.getElementById('input-limite').style.border = '1px solid #c0504a';
+        return;
+    }
+    document.getElementById('input-limite').style.border = '1px solid #d0d0c8';
+    limitePorPagina = val;
+    paginaAtual = 1;
+    renderizarPagina();
+});
+
 async function carregarAreas() {
     const resposta = await fetch(`${API}/areas`);
     const areas = await resposta.json();
@@ -31,24 +74,28 @@ function mostrarCarregando() {
         '<p class="estado-vazio">Buscando...</p>';
 }
 
-//Montar tabela com resultados
-
-function renderizarTabela(periodicos){
-    const contagem = document.getElementById('contagem-resultados');
+// Renderiza a página atual
+function renderizarPagina() {
     const corpo = document.getElementById('corpo-resultados');
 
-    contagem.textContent = `${periodicos.length} periódico${periodicos.length !== 1 ? 's' : ''}`;
-    if (periodicos.length === 0) {
-        corpo.innerHTML = '<p class="estado-vazio">Nenhum periódico encontrado</p>'
+    if (todosResultados.length === 0) {
+        corpo.innerHTML = '<p class="estado-vazio">Nenhum periódico encontrado</p>';
         return;
-
     }
-    const linhas = periodicos.map(p => {
+
+    const isTotal = limitePorPagina === Infinity;
+    const totalPaginas = isTotal ? 1 : Math.ceil(todosResultados.length / limitePorPagina);
+    paginaAtual = Math.min(paginaAtual, totalPaginas);
+
+    const inicio = isTotal ? 0 : (paginaAtual - 1) * limitePorPagina;
+    const fim = isTotal ? todosResultados.length : Math.min(inicio + limitePorPagina, todosResultados.length);
+    const fatia = todosResultados.slice(inicio, fim);
+
+    const linhas = fatia.map(p => {
         const issn    = p.issn    || p['ISSN']                || '-';
         const titulo  = p.titulo  || p['Título']               || '-';
         const area    = p.areaAvaliacao || p['Área de Avaliação'] || '-';
         const estrato = p.estrato || p['Estrato']              || '-';
-
         return `<tr>
             <td>${issn}</td>
             <td>${titulo}</td>
@@ -57,19 +104,44 @@ function renderizarTabela(periodicos){
         </tr>`;
     }).join('');
 
+    let paginacao = '';
+    if (!isTotal && totalPaginas > 1) {
+        paginacao = `
+            <div class="controles-pagina">
+                <span class="info-pagina">Mostrando ${inicio + 1}–${fim} de ${todosResultados.length}</span>
+                <div>
+                    <button class="btn-pagina" onclick="mudarPagina(-1)" ${paginaAtual === 1 ? 'disabled' : ''}>← Anterior</button>
+                    <button class="btn-pagina" onclick="mudarPagina(1)" ${paginaAtual === totalPaginas ? 'disabled' : ''}>Próxima →</button>
+                </div>
+            </div>`;
+    }
+
     corpo.innerHTML = `
         <table>
             <thead>
-                <tr>
-                    <th>ISSN</th>
-                    <th>Título</th>
-                    <th>Área de Avaliação</th>
-                    <th>Estrato</th>
-                </tr>
+                <tr><th>ISSN</th><th>Título</th><th>Área de Avaliação</th><th>Estrato</th></tr>
             </thead>
             <tbody>${linhas}</tbody>
-        </table>`;
+        </table>
+        ${paginacao}`;
+}
 
+// Atualiza a tabela com novos resultados
+function renderizarTabela(periodicos) {
+    todosResultados = periodicos;
+    paginaAtual = 1;
+    const contagem = document.getElementById('contagem-resultados');
+    const selectLimite = document.getElementById('select-limite');
+    contagem.textContent = `${periodicos.length} periódico${periodicos.length !== 1 ? 's' : ''}`;
+    selectLimite.style.display = periodicos.length > 0 ? 'inline-block' : 'none';
+    renderizarPagina();
+}
+
+// Muda de página
+function mudarPagina(direcao) {
+    paginaAtual += direcao;
+    renderizarPagina();
+    document.querySelector('.secao-resultados').scrollIntoView({ behavior: 'smooth' });
 }
 
 // Busca por ISSN

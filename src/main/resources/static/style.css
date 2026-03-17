@@ -281,6 +281,37 @@ tr:hover td {
     font-weight: 500;
 }
 
+.controles-pagina {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-top: 1px solid #f0f0e8;
+    background-color: #fafaf7;
+}
+
+.info-pagina {
+    font-size: 12px;
+    color: #888;
+}
+
+.btn-pagina {
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #1a6bb5, #2e8b57);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: 6px;
+    transition: opacity 0.2s;
+}
+
+.btn-pagina:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
     header {
         padding: 12px 16px;
@@ -356,4 +387,5 @@ tr:hover td {
         width: 32px;
         font-size: 11px;
     }
+
 }
